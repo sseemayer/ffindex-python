@@ -81,8 +81,10 @@ class FFIndexContent(object):
 
     def readlines(self, sizehint=None):
         if sizehint is None:
+            s = self.readline()
             while s:
-                yield self.readline()
+                yield s
+                s = self.readline()
         else:
             for _ in range(sizehint):
                 yield self.readline()
