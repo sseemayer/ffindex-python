@@ -14,4 +14,4 @@ for entry in ffindex.read(sys.argv[1], encoding="UTF-8"):
     m = hashlib.sha1()
     m.update(entry.read())
 
-    print("{sha1}  -".format(name=entry.name, sha1=m.hexdigest()))
+    print("{sha1}  {name}".format(name=entry.name, sha1=m.hexdigest()))
