@@ -40,7 +40,9 @@ Please note that the current `ffindex_apply` (as bundled with HH-suite 2.0.16) s
 
 ## FAQ
 
-  * **I want readline to return Unicode, not byte strings!** - You can specify the `encoding='UTF-8'` setting on the `ffindex.read` command to automatically make `readline()` return Unicode strings.
+  * **I want readline to return Unicode, not byte strings!** - You can specify the `encoding='UTF-8'` setting on the `ffindex.read` command to automatically make `readline()` return Unicode strings: `ffindex.read('my_file', encoding='UTF-8')`
+
+  * **I have a different filename structure than X and X.index!** - You can specify separate filenames for database and index using the first two positional arguments of `ffindex.read`: `ffindex.read('my_file.db', 'my_file.index')`
 
   * **How is the performance?** - I've tried to be efficient in implementing this (patches welcome!). The `sha1sum` demo above takes ~8s to process 1000x2 MB files on my machine while using `ffindex_apply` to pipe the same data to `sha1sum` takes 12s :)
 
