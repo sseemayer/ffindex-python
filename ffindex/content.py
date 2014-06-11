@@ -1,4 +1,4 @@
-import io
+BUF_SIZE = 1024
 
 
 class FFIndexContent(object):
@@ -50,20 +50,29 @@ class FFIndexContent(object):
 
     def readline(self, size=None):
 
-        i = self.readbuffer.find(b'\n') + 1
-        if i > 0:
-            print("found in buffer at {0}".format(i))
-            line = self.readbuffer[0:i]
-            self.readbuffer = self.readbuffer[i:]
+        bufofs = 0
+        while True:
+            i = self.readbuffer.find(b'\n', bufofs) + 1
+            if i > 0:
+                line = self.readbuffer[0:i]
+                self.readbuffer = self.readbuffer[i:]
+                self.pos += i
+                break
 
-        else:
+            else:
+                self.parent.seek(self.start + self.pos + bufofs)
 
-            buffered = len(self.readbuffer)
-            self.parent.seek(self.start + self.pos + buffered)
-            line = self.readbuffer + io.BufferedIOBase.readline(self.parent, self.length - self.parent.tell())
-            self.pos += len(line) - buffered
+                read_until = self.length - self.pos
+                if read_until > BUF_SIZE:
+                    read_until = BUF_SIZE
 
-            self.readbuffer = b""
+                elif read_until < 1:
+                    line = b''
+                    break
+
+                newbuf = self.parent.read(read_until)
+                bufofs = len(self.readbuffer)
+                self.readbuffer += newbuf
 
         if self.encoding:
             line = line.decode(self.encoding)
