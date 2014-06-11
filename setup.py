@@ -3,7 +3,7 @@ from distutils.core import setup
 
 setup(
     name='ffindex',
-    version='0.0.2',
+    version='0.0.3',
     description='ffindex support for Python',
     author='Stefan Seemayer',
     author_email='mail@semicolonsoftware.de',
