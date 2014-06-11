@@ -1,4 +1,5 @@
 from ffindex.content import FFIndexContent
+import mmap
 
 try:
     isinstance("", basestring)
@@ -29,10 +30,14 @@ def read(ffindex_data, ffindex_db=None, encoding=None):
     f_db = _to_file(ffindex_db, "r")
     f_data = _to_file(ffindex_data, "rb")
 
+    m_data = mmap.mmap(f_data.fileno(), 0, prot=mmap.PROT_READ)
+
     for l_db in f_db:
         filename, start, length = l_db.strip().split("\t")
 
-        yield FFIndexContent(f_data, int(start), int(length) - 1, filename, encoding)
+        yield FFIndexContent(m_data, int(start), int(length) - 1, filename, encoding)
+
+    m_data.close()
 
     if _is_string(ffindex_db):
         f_db.close()
