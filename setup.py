@@ -3,13 +3,13 @@ from distutils.core import setup
 
 setup(
     name='ffindex',
-    version='0.0.1',
+    version='0.0.2',
     description='ffindex support for Python',
     author='Stefan Seemayer',
     author_email='mail@semicolonsoftware.de',
     license='MIT',
     url='https://github.com/sseemayer/ffindex-python',
-    py_modules=['ffindex'],
+    packages=['ffindex'],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Science/Research",
