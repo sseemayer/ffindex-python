@@ -6,6 +6,8 @@ This module enables Python reading support for Andy Hauser's [ffindex](http://pu
 
 	$ pip install ffindex
 
+Alternatively, you can clone this repository somewhere and create a symbolic link to the `ffindex` subfolder inside of your project.
+
 ## Demo
 
 From a clone of the git repo, you can generate 10 random files and compare their `sha1sum` outputs with the SHA1 checksums calculated by the Python script:
