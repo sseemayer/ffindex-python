@@ -119,13 +119,45 @@ class FFIndexContent(object):
         self.length = size
 
     def write(self, str):
-        raise Error("Read-only access!")
+        raise Exception("Read-only access!")
 
     def writelines(self, sequence):
-        raise Error("Read-only access!")
+        raise Exception("Read-only access!")
 
     def __iter__(self):
         return self
 
     def __repr__(self):
         return "FFIndexEntry('{name}', start={start}, length={length})".format(name=self.name, start=self.start, length=self.length)
+
+    def _translate_slice(self, index):
+
+        start = index.start
+        stop = index.stop
+
+        if not start:
+            start = 0
+
+        if not stop:
+            start = self.length
+
+        # indexing from the right
+        if start < 0:
+            start = self.length + start
+
+        if stop < 0:
+            stop = self.length + stop
+
+        if start < 0:
+            start = 0
+
+        if stop > self.length:
+            stop = self.length
+
+        return slice(start + self.start, stop + self.start, index.step)
+
+    def __getitem__(self, index):
+        return self.parent.__getitem__(self._translate_slice(index))
+
+    def __setitem__(self, index, value):
+        return self.parent.__setitem__(self._translate_slice(index), value)

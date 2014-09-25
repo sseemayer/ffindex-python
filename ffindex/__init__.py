@@ -25,12 +25,12 @@ def read(ffindex_data, ffindex_db=None, encoding=None):
         if _is_string(ffindex_data):
             ffindex_db = ffindex_data + ".index"
         else:
-            raise Error("When ffindex_data is passed as a file-like object, ffindex_db is required")
+            raise Exception("When ffindex_data is passed as a file-like object, ffindex_db is required")
 
     f_db = _to_file(ffindex_db, "r")
-    f_data = _to_file(ffindex_data, "rb")
+    f_data = _to_file(ffindex_data, "r+b")
 
-    m_data = mmap.mmap(f_data.fileno(), 0, prot=mmap.PROT_READ)
+    m_data = mmap.mmap(f_data.fileno(), 0)
 
     for l_db in f_db:
         filename, start, length = l_db.strip().split("\t")
